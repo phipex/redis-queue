@@ -1,16 +1,17 @@
-package co.com.ies.pruebas.webservice.task;
+package co.com.ies.pruebas.webservice.task.local;
 
+import co.com.ies.pruebas.webservice.task.TaskTest;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class FinishedTasck {
+public class FinishedTasckLocal {
 
-    final List<TastTest> lista = new ArrayList<>();
+    final List<TaskTest> lista = new ArrayList<>();
 
-    public void add(TastTest tastTest){
+    public void add(TaskTest tastTest){
         lista.add(tastTest);
     }
 
@@ -18,13 +19,13 @@ public class FinishedTasck {
         return lista.size();
     }
 
-    public boolean contains(TastTest tastTest){
+    public boolean contains(TaskTest tastTest){
         //sout();
         return lista.contains(tastTest);
     }
 
     public boolean contains(Integer value) {
-        return contains(new TastTest(value));
+        return contains(new TaskTest(value));
     }
 
     public void sout(){

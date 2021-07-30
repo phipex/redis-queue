@@ -2,7 +2,7 @@ from locust import task, between
 from locust.contrib.fasthttp import FastHttpUser
 from locust import events
 
-limit = 10
+limit = 100
 cont = 0
 
 

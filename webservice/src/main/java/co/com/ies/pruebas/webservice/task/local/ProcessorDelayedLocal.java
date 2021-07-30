@@ -1,5 +1,6 @@
-package co.com.ies.pruebas.webservice.task;
+package co.com.ies.pruebas.webservice.task.local;
 
+import co.com.ies.pruebas.webservice.task.TaskTest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -7,16 +8,16 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 @Component
-public class ProcessorDelayed {
+public class ProcessorDelayedLocal {
     Random rn = new SecureRandom();
-    private final FinishedTasck finishedTasck;
+    private final FinishedTasckLocal finishedTasck;
 
-    public ProcessorDelayed(FinishedTasck finishedTasck) {
+    public ProcessorDelayedLocal(FinishedTasckLocal finishedTasck) {
         this.finishedTasck = finishedTasck;
     }
 
     @Async
-    public void processElement(TastTest element) {
+    public void processElement(TaskTest element) {
         final int timeSleep = rn.nextInt(2000);
 
         try {

@@ -24,7 +24,7 @@ public abstract class QueueAsyncAbstract<TasckType> {
         publishNewElementsAdded();
     }
 
-    public void onNewElementAdded(){
+    public void processQueue(){
         Queue<TasckType> elements = getQueue();
         System.out.println("elements = " + elements.size());
         for (int i = 0; i < elements.size(); i++) {
@@ -33,6 +33,7 @@ public abstract class QueueAsyncAbstract<TasckType> {
                 processElement(tasckType);
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("Error al procesar la tarea, se agrega de nuevo en la cola");
                 offer(tasckType);
             }
         }

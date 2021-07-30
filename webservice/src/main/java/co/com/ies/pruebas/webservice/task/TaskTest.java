@@ -3,11 +3,11 @@ package co.com.ies.pruebas.webservice.task;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class TastTest implements Serializable {
+public class TaskTest implements Serializable {
     private int value;
 
-    public TastTest() {}
-    public TastTest(int value) {
+    public TaskTest() {}
+    public TaskTest(int value) {
         this.value = value;
     }
     public int getValue() {
@@ -22,7 +22,7 @@ public class TastTest implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TastTest tastTest = (TastTest) o;
+        TaskTest tastTest = (TaskTest) o;
         return value == tastTest.value;
     }
 
