@@ -25,6 +25,7 @@ public abstract class QueueAsyncAbstract<TasckType> {
     }
 
     public void processQueue(){
+        System.out.println("QueueAsyncAbstract.processQueue");
         Queue<TasckType> elements = getQueue();
         System.out.println("elements = " + elements.size());
         for (int i = 0; i < elements.size(); i++) {

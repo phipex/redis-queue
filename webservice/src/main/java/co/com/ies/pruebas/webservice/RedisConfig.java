@@ -1,13 +1,23 @@
 package co.com.ies.pruebas.webservice;
 
 import org.redisson.Redisson;
+import org.redisson.api.ExecutorOptions;
+import org.redisson.api.RScheduledExecutorService;
 import org.redisson.api.RedissonClient;
+import org.redisson.api.WorkerOptions;
+import org.redisson.api.executor.TaskFailureListener;
+import org.redisson.api.executor.TaskFinishedListener;
+import org.redisson.api.executor.TaskStartedListener;
+import org.redisson.api.executor.TaskSuccessListener;
 import org.redisson.config.Config;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class RedisConfig {
