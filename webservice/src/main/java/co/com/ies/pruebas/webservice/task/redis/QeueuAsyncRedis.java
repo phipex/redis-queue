@@ -3,9 +3,15 @@ package co.com.ies.pruebas.webservice.task.redis;
 import co.com.ies.pruebas.webservice.task.QueueAsyncAbstract;
 import co.com.ies.pruebas.webservice.task.TaskTest;
 import org.redisson.api.*;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +19,10 @@ import java.util.concurrent.TimeUnit;
 public class QeueuAsyncRedis  extends QueueAsyncAbstract<TaskTest> {
 
     private static final String KEY_QEUEU = "TaskTest_Qeueu";
+
+    @Autowired
+    @Qualifier("remoteProcessQeueu")
+    private ServiceProcessQeueu serviceProcessQeueu;
 
     private final RedissonClient redissonClient;
     private final ProcessorDelayedRedis processorDelayed;
@@ -27,23 +37,27 @@ public class QeueuAsyncRedis  extends QueueAsyncAbstract<TaskTest> {
     protected void offer(TaskTest element) {
         RQueue<TaskTest> queue = redissonClient.getQueue(KEY_QEUEU);
         queue.add(element);
+        final int value = element.getValue();
+        final long timeInMillis = Calendar.getInstance().getTimeInMillis();
+
+        System.out.println("QeueuAsyncRedis.offer "+timeInMillis+" value = " + value +" queue = " + queue);
+        RQueue<TaskTest> queue2 = redissonClient.getQueue(KEY_QEUEU);
+        System.out.println("QeueuAsyncRedis.offer  "+timeInMillis+" value = " + value +" queue2 = " + queue2);
     }
 
+    @Async
     @Override
     protected void publishNewElementsAdded() {
+        System.out.println("QeueuAsyncRedis.publishNewElementsAdded");
+        publishEvents();
+    }
+
+    @Async
+    void publishEvents() {
         System.out.println("Nueva tarea se ha agregado");
         // TODO llamar el servicio remoto para que procese la lista
         // TODO crear la tarea runable para que pueda ejecutar
-        ExecutorOptions executorOptions = ExecutorOptions.defaults().taskRetryInterval(15, TimeUnit.SECONDS);
-        final RScheduledExecutorService executorService = redissonClient.getExecutorService("myExecutor", executorOptions);
-        WorkerOptions workerOptions = WorkerOptions.defaults().taskTimeout(2, TimeUnit.SECONDS);
-        //workerOptions.beanFactory(beanFactory);
-        executorService.registerWorkers(workerOptions);
-
-        Runnable task2 = (Runnable & Serializable)() -> System.out.println("Running task2...");
-        executorService.schedule(task2, 1, TimeUnit.SECONDS);
-        executorService.schedule(new RemoteServiceProcessor(),1000,TimeUnit.MILLISECONDS);
-        //myExecutor.shutdown();
+        serviceProcessQeueu.processQeueu();
     }
 
     @Override
@@ -55,6 +69,10 @@ public class QeueuAsyncRedis  extends QueueAsyncAbstract<TaskTest> {
 
     @Override
     protected void processElement(TaskTest element) {
+        System.out.println("QeueuAsyncRedis.processElement "+ element.getValue());
+        final RQueue<TaskTest> queue = redissonClient.getQueue(KEY_QEUEU + "_1");
+        queue.add(element);
         processorDelayed.processElement(element);
+
     }
 }

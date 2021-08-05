@@ -23,7 +23,7 @@ public class ProcessorDelayedRedis {
 
         try {
             Thread.sleep(timeSleep);
-            System.out.println("resolviendo element = " + element + " ,timeSleep = "+ timeSleep);
+            System.out.println("ProcessorDelayedRedis.processElement resolviendo element = " + element + " ,timeSleep = "+ timeSleep);
             finishedTasck.add(element);
         } catch (InterruptedException e) {
             e.printStackTrace();
