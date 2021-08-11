@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'co.com.ies.pruebas'
+version = '1.0-SNAPSHOT'
+
+description = """"""
+
+sourceCompatibility = 1.5
+targetCompatibility = 1.5
+
+
+
+repositories {
+        
+     maven { url "https://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'io.gatling.highcharts', name: 'gatling-charts-highcharts', version:'3.6.1'
+    compile group: 'io.gatling', name: 'gatling-app', version:'3.6.1'
+    compile group: 'io.gatling', name: 'gatling-recorder', version:'3.6.1'
+}
